@@ -37,15 +37,12 @@ You can run it using the Monty interpreter as follows:
 
 ./monty example.m
 
-The output will be:
-3
-2
-1
 
+#Authors 
 
-Authors :
 This project was developed by:
 
 Rayen Jouini
 Khaled Jallouli
 Khairi Taboubi
+
