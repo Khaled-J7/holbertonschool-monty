@@ -44,6 +44,8 @@ Authors:
 
 This project was developed by:
 
-Rayen Jouini
-Khaled Jallouli
-Khairi Taboubi
+* Rayen Jouini
+
+* Khaled Jallouli
+
+* Khairi Taboubi
