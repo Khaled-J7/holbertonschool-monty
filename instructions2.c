@@ -1,73 +1,89 @@
 #include "monty.h"
-
 /**
- * _queue - sets the format of the data to a queue (FIFO)
- *
- * @doubly: head of the linked list
- * @cline: line number;
- * Return: no return
- */
-void _queue(stack_t **doubly, unsigned int cline)
+ * pint - print the value of the top of the stack.
+ * @stack:the stack
+ * @line: line number.
+ * Return: void
+*/
+void pint(stack_t **stack, unsigned int line)
 {
-	(void)doubly;
-	(void)cline;
-
-	vglo.lifo = 0;
-}
-
-/**
- * _stack - sets the format fo the data to a stack (LIFO)
- *
- * @doubly: head of the linked list
- * @cline: line number;
- * Return: no return
- */
-void _stack(stack_t **doubly, unsigned int cline)
-{
-	(void)doubly;
-	(void)cline;
-
-	vglo.lifo = 1;
-}
-
-/**
- * _add - adds the top two elements of the stack
- *
- * @doubly: head of the linked list
- * @cline: line number;
- * Return: no return
- */
-void _add(stack_t **doubly, unsigned int cline)
-{
-	int m = 0;
-	stack_t *aux = NULL;
-
-	aux = *doubly;
-
-	for (; aux != NULL; aux = aux->next, m++)
-		;
-
-	if (m < 2)
+	if (*stack == NULL || stack == NULL)
 	{
-		dprintf(2, "L%u: can't add, stack too short\n", cline);
-		free_vglo();
+		error_exit_d("L%u: can't pint, stack empty\n", line, EXIT_FAILURE);
+	}
+	printf("%d\n", (*stack)->n);
+}
+
+/**
+ * pop - remove the top element of the stack.
+ * @stack:the stack
+ * @line: line number.
+ * Return: void
+*/
+void pop(stack_t **stack, unsigned int line)
+{
+	if (*stack == NULL)
+	{
+		fprintf(stderr, "L%u: can't pop an empty stack\n", line);
 		exit(EXIT_FAILURE);
 	}
 
-	aux = (*doubly)->next;
-	aux->n += (*doubly)->n;
-	_pop(doubly, cline);
-}
+	stack_t *temp = *stack;
+	*stack = (*stack)->next;
 
+	if (*stack != NULL)
+	{
+		(*stack)->prev = NULL;
+	}
+	free(temp);
+}
 /**
- * _nop - doesn't do anythinhg
- *
- * @doubly: head of the linked list
- * @cline: line number;
- * Return: no return
- */
-void _nop(stack_t **doubly, unsigned int cline)
+ * nop - doesn't do anything.
+ * @stack:the stack
+ * @line: line number.
+ * Return: void
+*/
+void nop(stack_t **stack, unsigned int line)
 {
-	(void)doubly;
-	(void)cline;
+	(void)line;
+	(void)stack;
+}
+/**
+ * swap -swap the top two elements of the stack.
+ * @stack: pointer to the top of the stack.
+ * @line_number: current number in the script.
+ *
+ * Return: void.
+*/
+void swap(stack_t **stack, unsigned int line_number)
+{
+	stack_t *temp;
+
+	if (*stack == NULL || (*stack)->next == NULL)
+	{
+		error_exit_d("L%u: can't swap, stack too short\n",
+		line_number, EXIT_FAILURE);
+	}
+	temp = (*stack)->next;
+	(*stack)->next = temp->next;
+	temp->next = (*stack);
+	temp->prev = NULL;
+	(*stack)->prev = temp;
+	(*stack) = temp;
+}
+/**
+ * add -adds the top two elements of the stack.
+ * @stack: pointer to the top of the stack.
+ * @line_number: current number in the script.
+ *
+ * Return: void.
+*/
+void add(stack_t **stack, unsigned int line_number)
+{
+	if (*stack == NULL || (*stack)->next == NULL)
+	{
+		error_exit_d("L%u: can't add, stack too short\n", line_number, EXIT_FAILURE);
+	}
+	(*stack)->next->n += (*stack)->n;
+	pop(stack, line_number);
 }

@@ -1,34 +1,34 @@
 #include "monty.h"
 
 /**
- * get_opcodes - selects the correct opcode to perform
+ * get_op_func - Selects the appropriate function to perform the operation.
+ * @opcode: The operator passed as an argument.
  *
- * @opc: opcode passed
- *
- * Return: pointer to the function that executes the opcode
+ * Return: A pointer to the appropriate function that performs the operation.
+ *         If the operator is not recognized, it returns NULL.
  */
-void (*get_opcodes(char *opc))(stack_t **stack, unsigned int line_number)
+
+void (*get_op_func(char *opcode))(stack_t **, unsigned int)
 {
-	instruction_t instruct[] = {
-		{"push", _push},
-		{"pall", _pall},
-		{"pint", _pint},
-		{"pop", _pop},
-		{"swap", _swap},
-		{"queue", _queue},
-		{"stack", _stack},
-		{"add", _add},
-		{"nop", _nop},
-	
+	int i = 0;
+	instruction_t ops[] = {
+		{"push", push},
+		{"pall", pall},
+		{"pint", pint},
+		{"pop", pop},
+		{"nop", nop},
+		{"swap", swap},
+		{"add", add},
 		{NULL, NULL}
 	};
-	int i;
 
-	for (i = 0; instruct[i].opcode; i++)
+	while (ops[i].opcode != NULL)
 	{
-		if (_strcmp(instruct[i].opcode, opc) == 0)
-			break;
+		if (strcmp(opcode, ops[i].opcode) == 0)
+		{
+			return (ops[i].f);
+		}
+		i++;
 	}
-
-	return (instruct[i].f);
+	return (NULL);
 }
